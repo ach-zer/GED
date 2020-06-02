@@ -1,0 +1,93 @@
+<nz-steps [nzType]="default">
+  <nz-step class="nz-step-icon" nzIcon="book" nzTitle="Fiche du document"></nz-step>
+</nz-steps>
+
+<div class="container" align="center">
+  <div class="row mt-3"></div>
+  <div class="row mt-3"></div>
+  <div class="row mt-3"></div>
+  <div class="row mt-3"></div>
+  <div nz-row>
+    
+    <div nz-col nzSpan="24">
+      <form nz-form class="ant-advanced-search-form" [nzLayout]="'inline'">
+
+        <nz-form-item>
+          <nz-form-label nzFor="DESDOCBI">Designation</nz-form-label>
+          <nz-form-control nzErrorTip="Please input designation!">
+            <input nzSize="default" nz-input placeholder="Enter designation" [disabled]="true" id="DESDOCBI" name="DESDOCBI"
+              [(ngModel)]="DESDOCBI"/>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzFor="SOUDOCBI">Source</nz-form-label>
+          <nz-form-control nzErrorTip="Please input source!">
+            <input nzSize="default" nz-input placeholder="Enter source" id="SOUDOCBI" name="SOUDOCBI"
+              [(ngModel)]="SOUDOCBI" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzFor="AUTDOCBI">Auteur</nz-form-label>
+          <nz-form-control nzErrorTip="Please input author!">
+            <input nzSize="default" nz-input placeholder="Enter author" id="AUTDOCBI" name="AUTDOCBI"
+              [(ngModel)]="AUTDOCBI" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzFor="REFDOCBI">Reference</nz-form-label>
+          <nz-form-control nzErrorTip="Please input reference!">
+            <input nzSize="default" nz-input placeholder="Enter reference" id="REFDOCBI" name="REFDOCBI"
+              [(ngModel)]="REFDOCBI" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzFor="VERDOCBI">Version</nz-form-label>
+          <nz-form-control nzErrorTip="Please input version!">
+            <input required nzSize="default" nz-input placeholder="Enter version" id="VERDOCBI" name="VERDOCBI"
+              [(ngModel)]="VERDOCBI" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzFor="NOMBPAGE">Nbre de pages</nz-form-label>
+          <nz-form-control nzErrorTip="Please input nbre pages!">
+            <nz-input-number nzSize="default" [(ngModel)]="NOMBPAGE" [nzMin]="1" [nzMax]="50" [nzStep]="1"
+                name="NOMBPAGE"></nz-input-number>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzFor="RESDOCBI">Résumé</nz-form-label>
+          <nz-form-control nzErrorTip="Please input resume!">
+              <textarea cols="50" rows="4" nz-input [(ngModel)]="RESDOCBI" name="RESDOCBI"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+
+      </form>
+    </div>
+  </div>
+
+  <div class="row mt-3"></div>
+  <div class="row mt-3"></div>
+  <div nz-row>
+
+    <div nz-col nzSpan="10">
+      <button nz-button (click)="unsaveDoc()" routerLink="/api/ged/aquisition">
+        <i nz-icon nzType="left" nzTheme="outline"></i>Précédent
+      </button>
+    </div>
+    <div nz-col nzSpan="4"></div>
+  
+    <div nz-col nzSpan="10">
+      <button (click)="showConfirmFiche()" nz-button> <!-- (click)="save()" routerLink="/api/ged/typage" -->
+        Suivant
+        <i nz-icon nzType="right" nzTheme="outline"></i>
+      </button>
+    </div>
+  </div>
+
+</div>

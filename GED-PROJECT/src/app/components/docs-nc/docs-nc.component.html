@@ -1,0 +1,93 @@
+<div class="row mt-3"></div>
+<div class="row mt-3"></div>
+<div class="row mt-3"></div>
+<div class="row mt-3"></div>
+<div align="center" *ngIf="!docs_nc_service.isSpinning">
+  <h5>Les documents non classés</h5>
+</div>
+<div class="row mt-3"></div>
+<div class="row mt-3"></div>
+<div nz-row>
+  <div class="row mt-3" *ngIf="docs_nc_service.isSpinning"></div>
+  <div class="row mt-3" *ngIf="docs_nc_service.isSpinning"></div>
+  <div class="row mt-3" *ngIf="docs_nc_service.isSpinning"></div>
+  <div class="row mt-3" *ngIf="docs_nc_service.isSpinning"></div>
+  <div class="row mt-3" *ngIf="docs_nc_service.isSpinning"></div>
+  <div class="row mt-3" *ngIf="docs_nc_service.isSpinning"></div>
+  <div nz-col nzSpan="24" align="center">
+    <nz-spin nzSimple [nzSpinning]="docs_nc_service.isSpinning" [nzSize]="'large'"></nz-spin>
+  </div>
+  <div nz-col nzSpan="24" *ngIf="!docs_nc_service.isSpinning">
+    <nz-list [nzDataSource]="docs_nc_service.dataCard" [nzRenderItem]="item"
+      [nzGrid]="{ gutter: 16, xs: 24, sm: 12, md: 6, lg: 6, xl: 4 }">
+      <ng-template #item let-item>
+        <nz-list-item [nzContent]="nzContent">
+          <ng-template #nzContent>
+
+            <nz-card nzBordered nzSize="small" nzHoverable [nzTitle]="item.desdocbi" nzType="inner"
+              [nzCover]="coverTemplate" [nzActions]="[actionView, actionRetyp]">
+              <nz-card-meta [nzAvatar]="avatarTemplate"></nz-card-meta>
+
+              <ng-template #avatarTemplate>
+                <nz-avatar nzIcon="file"></nz-avatar>
+              </ng-template>
+
+              <ng-template #actionView>
+                <button nz-popover nzPopoverPlacement="bottom" nzPopoverContent="Afficher le document" [nzSize]="small"
+                  nz-button (click)="openPdf(item.idedocbi);" nzShape="circle">
+                  <i nz-icon nzType="eye" nzTheme="fill"></i>
+                </button>
+              </ng-template>
+
+              <ng-template #actionRetyp>
+                <button (click)="showModal(item.idedocbi)" nz-popover nzPopoverPlacement="bottom" nzPopoverContent="Retyper le document" [nzSize]="small"
+                  nz-button nzShape="circle">
+                  <i nz-icon nzType="edit" nzTheme="fill"></i>
+                </button>
+                <nz-modal [(nzVisible)]="isVisible" nzTitle="Retypage Document" (nzOnCancel)="handleCancel()"
+                  (nzOnOk)="handleOk(item.idedocbi);">
+                  <div nz-row>
+                    <div class="row mt-3"></div>
+                    <div nz-col nzSpan="4"></div>
+                    <div nz-col nzSpan="10">
+                      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le type de votre document"
+                        [(ngModel)]="selectedType" (ngModelChange)="onChangeTypes($event)">
+                        <nz-option *ngFor="let typeDoc of doc_typ_service.typeDocsToUse" nzLabel="{{typeDoc}}"
+                          nzValue="{{typeDoc}}"></nz-option>
+                      </nz-select>
+                    </div>
+                    <div class="row mt-3"></div>
+                    <div class="row mt-3"></div>
+                    <div class="row mt-3"></div>
+                    <div class="row mt-3"></div>
+                    <div class="row mt-3"></div>
+                    <div class="row mt-3"></div>
+                    <div class="row mt-3"></div>
+                    <div class="row mt-3"></div>
+                    <div class="row mt-3"></div>
+                  </div>
+                </nz-modal>
+              </ng-template>
+
+
+            </nz-card>
+            <div align="center" class="tag_document">
+              <nz-tag nzMode="checkable" (nzCheckedChange)="saveIdedocbi(item.idedocbi)">
+                <!--selectedTags.indexOf(tag) > -1-->
+                <h6>{{item.desdocbi}}</h6>
+              </nz-tag>
+            </div>
+          </ng-template>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+  </div>
+</div>
+<!-- to show the pdf -->
+<div>
+  <ng2-pdfjs-viewer #pdfViewerOnDemand [externalWindow]="true" [downloadFileName]="'mytestfile.pdf'" [openFile]="true"
+    [viewBookmark]="true" [download]="false"></ng2-pdfjs-viewer>
+</div>
+<div>
+  <ng2-pdfjs-viewer #pdfViewerAutoLoad></ng2-pdfjs-viewer>
+</div>

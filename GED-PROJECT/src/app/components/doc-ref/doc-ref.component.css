@@ -1,0 +1,16 @@
+.editable-tag {
+    background: rgb(100, 154, 255);
+    border-style: groove;
+  }
+
+i{
+    vertical-align:middle;
+    display: inline-block;
+}
+.nz-step-icon{    
+  animation: allblink 2s infinite;
+}
+@keyframes allblink { 
+0% { }
+50% {  background-color:yellow; } 
+}

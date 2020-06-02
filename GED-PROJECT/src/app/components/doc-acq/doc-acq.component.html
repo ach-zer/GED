@@ -1,0 +1,38 @@
+  <nz-steps [nzType]="default">
+    <nz-step class="nz-step-icon" nzIcon="upload" nzTitle="Aquisition du document"></nz-step>
+  </nz-steps>
+  
+  <div class="container">
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div nz-row>
+      <div nz-col nzSpan="6"></div>
+      <div nz-col nzSpan="12">
+        <ngx-dropzone nz-popover nzPopoverContent="Selectionner un fichier pdf" nzPopoverPlacement="right" (change)="onSelect($event)">
+          <ngx-dropzone-label><i nz-icon nzType="drag" nzTheme="outline"></i>
+            Faites glisser et déposez le fichier ici</ngx-dropzone-label>
+          <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+            <ngx-dropzone-label><i nz-icon nzType="file-pdf" nzTheme="outline"></i>{{ f.name }}</ngx-dropzone-label>
+            <!-- <i nz-icon nzType="file-pdf" nzTheme="outline"></i> -->
+          </ngx-dropzone-preview>
+        </ngx-dropzone>
+      </div>
+      <div nz-col nzSpan="6"></div>
+    </div>
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div nz-row>
+      <div nz-col nzSpan="6"></div>
+      <div nz-col nzSpan="6"></div>
+      <div nz-col nzSpan="8"></div>
+      <div nz-col nzSpan="4" *ngIf="nextStep">
+          <button (click)="isFileHere()" nz-button>
+            Suivant
+            <i nz-icon nzType="right" nzTheme="outline"></i>
+          </button>
+      </div>
+    </div>
+  </div>

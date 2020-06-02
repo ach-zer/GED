@@ -1,0 +1,44 @@
+<nz-steps [nzType]="default">
+    <nz-step class="nz-step-icon" nzIcon="user" nzTitle="Annotation du document"></nz-step>
+</nz-steps>
+<div class="container" align="center">
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div nz-row>
+        <div nz-col nzSpan="6"></div>
+        <div nz-col nzSpan="12">
+            <nz-radio-group nzButtonStyle="solid" *ngFor="let typeAnn of doc_annot_service.tabTypeAnno" [(ngModel)]="radioValue" nzSize="large">
+                <label nz-radio-button nzValue="{{typeAnn}}">{{typeAnn}}</label>
+            </nz-radio-group>
+        </div>        
+        <div nz-col nzSpan="6"></div>
+    </div>
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div nz-row>
+        <div nz-col nzSpan="6"></div>
+        <div nz-col nzSpan="12">
+            <textarea cols="50" rows="4" nz-input [(ngModel)]="TEXTANNO" name="TEXTANNO"></textarea>
+        </div>
+        <div nz-col nzSpan="6"></div>
+    </div>
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div nz-row>
+        <div nz-col nzSpan="10">
+            <button nz-button routerLink="/api/ged/identification">
+              <i nz-icon nzType="left" nzTheme="outline"></i>Précédent
+            </button>
+          </div>
+        <div nz-col nzSpan="4"></div>
+        <div nz-col nzSpan="10">
+            <button (click)="showConfirmAnno()" nz-button>
+                Enregistrer                     
+            </button>
+        </div>
+    </div>
+</div>

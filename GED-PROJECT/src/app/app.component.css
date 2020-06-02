@@ -1,0 +1,176 @@
+/* .layout {
+  height: 100vh;
+  background-color: #34495e;
+}
+
+nz-header {
+  position: fixed;
+  width: 100%;
+  height: 70px;
+  background-color: #34495e;
+}
+
+
+nz-content {
+  padding: 0 50px;
+  margin-top: 100px;
+  background-color: #34495e;
+}
+
+nz-breadcrumb {
+  margin: 16px 0;
+  background-color: #34495e;
+}
+
+.inner-content {
+  background: rgb(235, 229, 229);
+  padding: 10px 10px 24px 15px;
+  height: 580px;
+}
+
+nz-footer {
+  background-color: #34495e;
+}
+
+
+
+
+
+
+
+ul{
+	display: inline;
+	text-align: center;
+}
+li {
+  color: #ebebeb;	
+	margin-right: 50px;
+}
+
+li:hover {  
+  text-shadow: #e9e3e2;
+	font-weight: bold;
+}
+
+
+nav {
+	margin: 27px auto 0;
+	position: relative;
+	width: 700px;
+	height: 60px;
+	background-color: #273442;
+	border-radius: 8px;
+	font-size: 0;
+}
+nav a {
+	line-height: 60px;
+	height: 100%;
+	font-size: 15px;
+	display: inline-block;
+	position: relative;
+	z-index: 1;
+	text-decoration: none;
+	text-align: center;
+	color: white;
+	cursor: pointer;
+}
+nav .animation {
+	position: absolute;
+	height: 100%;
+	top: 0;
+	z-index: 0;
+	transition: all .5s ease 0s;
+	border-radius: 8px;
+}
+a:nth-child(1) {
+	width: 100px;
+}
+a:nth-child(2) {
+	width: 200px;
+}
+a:nth-child(3) {
+	width: 200px;
+}
+a:nth-child(4) {
+	width: 200px;
+}
+
+nav .ged, a:nth-child(1):hover~.animation {
+	width: 100px;
+	left: 0;
+	background-color: #1abc9c;
+}
+nav .start-Ajout, a:nth-child(2):hover~.animation {
+	width: 200px;
+	left: 100px;
+	background-color: #e74c3c;
+}
+nav .start-Recherche, a:nth-child(3):hover~.animation {
+	width: 200px;
+	left: 300px;
+	background-color: #3498db;
+}
+nav .start-Tous, a:nth-child(4):hover~.animation {
+	width: 200px;
+	left: 500px;
+	background-color: #9b59b6;
+}
+ */
+
+ .trigger {
+	font-size: 18px;
+	line-height: 64px;
+	padding: 0 24px;
+	cursor: pointer;
+	transition: color 0.3s;
+	position: relative;
+	left: 37px;
+  }
+
+  .trigger:hover {
+	color: #1890ff;
+  }
+
+  .logo {
+	height: 62px;
+	width: 100px;
+	margin: 19px;
+	position: relative;
+	left: 19px;
+  }
+
+  nz-header {
+	background: #fff;
+	padding: 0;
+  }
+
+  nz-sider [nz-menu]{
+	  position: relative;
+	  top: 49px;
+  }
+  
+  nz-sider [nz-menu] li{
+	font-style: oblique;
+	font-size: 17px;
+  }
+
+  nz-content {
+	margin: 0 16px;
+	height: 680px;
+  }
+
+  nz-breadcrumb {
+	margin: 16px 0;
+  }
+
+  .inner-content {
+	padding: 24px;
+	background: rgb(235, 229, 229);
+	min-height: 640px;
+	background-image: url("../assets/ged-icon-2.png");
+	opacity:0.95;
+	background-repeat: no-repeat;
+	background-size: 600px;
+	background-position-x: center;
+	background-position-y: center;
+  }

@@ -1,0 +1,67 @@
+<nz-steps [nzType]="navigation">
+  <nz-step class="nz-step-icon" nzIcon="book" nzTitle="Caractérisation"></nz-step>
+</nz-steps>
+<div class="container" *ngIf="this.doc_typ_Service.selectedType != null" align="center">
+  <div class="row mt-3"></div>
+  <div class="row mt-3"></div>
+  <div nz-row>
+    <div nz-col nzSpan="24">
+      <h3>Votre choix est : {{ this.doc_typ_Service.selectedType }}</h3>
+    </div>
+  </div>
+  <div class="row mt-3"></div>
+  <div class="row mt-3"></div>
+  <div nz-row>
+    <div nz-col nzSpan="24">
+      <form nz-form class="ant-advanced-search-form" [nzLayout]="'inline'">
+
+        <nz-form-item *ngFor="let typeCara of typeCarasToUse">
+          <nz-form-label nzFor={{typeCara}}>{{typeCara}}</nz-form-label>
+          <!-- First condition -->
+          <nz-form-control nzErrorTip="Please input cara!" *ngIf="typeCara.substring(0, 4).toLowerCase() != 'date'">
+            <input nzSize="default" nz-input placeholder="Enter Caracterisation" id={{typeCara}} name={{typeCara}}
+              [(ngModel)]="this[typeCara]" />
+          </nz-form-control>
+          <!-- Seconde condition -->
+          <nz-form-control nzErrorTip="Please input cara!" *ngIf="typeCara.substring(0, 4).toLowerCase() == 'date'">
+            <nz-date-picker [(ngModel)]="this[typeCara]" name={{typeCara}}></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+
+      </form>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="3">
+      <button (click)="clearType()" routerLink="/api/ged/typage" nz-button><i nz-icon nzType="left"
+        nzTheme="outline"></i>Précédent</button>
+    </div>
+    <div nz-col nzSpan="18"></div>
+    <div nz-col nzSpan="3">
+      <button (click)="showConfirmCara()" nz-button> <!-- routerLink="/api/ged/referencement" -->
+        Suivant
+        <i nz-icon nzType="right" nzTheme="outline"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="this.doc_typ_Service.selectedType == null">
+  <div class="row">
+    <br>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <nz-result nzStatus="warning" nzTitle="You must select a type for your document">
+        <div nz-result-extra>
+        </div>
+      </nz-result>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <button routerLink="/api/ged/typage" nz-button><i nz-icon nzType="left"
+        nzTheme="outline"></i>Back To Types</button>
+    </div>
+  </div>
+</div>

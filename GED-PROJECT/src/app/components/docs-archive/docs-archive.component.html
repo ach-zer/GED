@@ -1,0 +1,71 @@
+<nz-layout class="inner-layout">
+    <nz-sider nzWidth="250px" nzTheme="light">
+        <ul nz-menu nzMode="inline" class="sider-menu">
+            <li nz-submenu nzOpen nzTitle="Dossiers" nzIcon="folder">
+                <div align="center">
+                    <nz-spin nzSimple [nzSpinning]="docs_archive_service.isSpinning" [nzSize]="'small'"></nz-spin>
+                </div>
+                
+                <div class="tree_archives" *ngIf="!docs_archive_service.isSpinning">
+                    <nz-tree [nzData]="docs_archive_service.t_nodes" nzShowLine (nzClick)="docs_archive_service.nzClassement($event);">
+                    </nz-tree>
+                </div>
+            </li>
+        </ul>
+    </nz-sider>
+    <nz-content class="inner-content">
+        <div nz-row>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="1">
+                <a [routerLink]="[{outlets: {secondOutlet: 'docsNC'}}]">
+                    <button (click)="docs_archive_service.showMessage()" nz-button nz-popover nzPopoverPlacement="bottom" 
+                        nzPopoverContent="Aficher les documents non classés" [nzSize]="small" nzShape="square">
+                        <i nz-icon nzType="qq-square" nzTheme="fill"></i>
+                    </button>
+                </a>
+            </div>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="1">
+                <a [routerLink]="[{outlets: {secondOutlet: 'docsNT'}}]">
+                    <button nz-button nz-popover nzPopoverPlacement="bottom" 
+                        nzPopoverContent="Aficher les documents non typés" [nzSize]="small" nzShape="square">
+                        <i nz-icon nzType="star" nzTheme="fill"></i>
+                    </button>
+                </a>
+            </div>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="1">
+                <a [routerLink]="[{outlets: {secondOutlet: 'docsSearch'}}]">
+                    <button nz-button nz-button nz-popover nzPopoverPlacement="bottom"
+                        nzPopoverContent="Rechercher des documents" [nzSize]="small" nzShape="circle">
+                        <i nz-icon nzType="search" nzTheme="outline"></i>
+                    </button>
+                </a>
+            </div>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="1">                
+                <button (click)="showModal()" nz-button nz-button nz-popover nzPopoverPlacement="bottom"
+                    nzPopoverContent="Créer une structure d'archivage" [nzSize]="small" nzShape="square">
+                    <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
+                </button>
+                <nz-modal [(nzVisible)]="isVisible" nzTitle="Création d'une structure d'archivage" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+                    <div nz-row>
+                      <div class="row mt-3"></div>
+                      <div nz-col nzSpan="5"></div>
+                      <div nz-col nzSpan="12">
+                        <input nzSize="large" nz-input placeholder="Le nom de la structure" [(ngModel)]="STRUCT"/>
+                      </div>                          
+                      <div class="row mt-3"></div>
+                      <div class="row mt-3"></div>
+                      <div class="row mt-3"></div>
+                      <div class="row mt-3"></div>
+                      <div class="row mt-3"></div>
+                      <div class="row mt-3"></div>
+                    </div>
+                  </nz-modal>                
+            </div>
+        </div>
+        <router-outlet name="secondOutlet"></router-outlet>
+    </nz-content>
+</nz-layout>

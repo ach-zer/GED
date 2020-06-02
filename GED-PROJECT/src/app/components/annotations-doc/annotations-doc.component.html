@@ -1,0 +1,39 @@
+ <nz-layout class="inner-layout">
+    
+    <nz-content class="inner-content">
+        <div nz-row>
+            <div nz-col nzSpan="10">
+                <button nz-button routerLink="/api/ged/docs">
+                    <i nz-icon nzType="left" nzTheme="outline"></i> Retourner vers les documents
+                </button>
+            </div>
+        </div>
+        <div class="row mt-3"></div>
+        <div class="row mt-3"></div>
+        <div class="row mt-3" *ngIf="annotations_doc_service.isSpinning"></div>
+        <div class="row mt-3" *ngIf="annotations_doc_service.isSpinning"></div>
+        <div class="row mt-3" *ngIf="annotations_doc_service.isSpinning"></div>
+        <div class="row mt-3" *ngIf="annotations_doc_service.isSpinning"></div>
+        <div nz-col nzSpan="24" align="center">
+            <nz-spin nzSimple [nzSpinning]="annotations_doc_service.isSpinning" [nzSize]="'large'"></nz-spin>
+        </div>
+        
+        <nz-table *ngIf="!annotations_doc_service.isSpinning" #basicTable [nzData]="listOfData">
+            <thead>
+                <tr>
+                  <th>Type d'annotation</th>
+                  <th>Date d'annotation</th>
+                  <th>Texte d'annotation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of basicTable.data">
+                  <td>{{data.type}}</td>
+                  <td>{{data.date}}</td>
+                  <td>{{data.annotation}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+
+    </nz-content>
+</nz-layout>

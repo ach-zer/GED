@@ -1,0 +1,68 @@
+<!-- <nz-layout class="layout">
+  
+  <nz-header>
+    <nav>  
+      <a [routerLink]="['api', 'ged', 'archive']">Ged</a>
+      <a [routerLink]="['/', 'api', 'ged', 'aquisition']">Ajout d'un document</a>
+      <a [routerLink]="['/', 'api', 'ged', 'search']">Recherche d'un document</a>
+      <a [routerLink]="['api', 'ged', 'docs']">Tous les documents</a>
+      <div class="animation ged"></div>
+    </nav>
+  </nz-header>
+    
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  
+    <nz-footer></nz-footer>
+</nz-layout> -->
+
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <div align="center" class="logo">
+      <a href="/">
+        <img width="80" height="60" src="../assets/ged_logo.png"/>
+      </a>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li nz-menu-item nzmatchrouter>
+        <a [routerLink]="['api', 'ged', 'archive']">
+          Archives
+        </a>
+      </li>
+      <li nz-menu-item nzmatchrouter>
+        <a [routerLink]="['/', 'api', 'ged', 'aquisition']">
+          Ajout Document
+        </a>
+      </li>
+      <li nz-menu-item nzmatchrouter>
+        <a [routerLink]="['api', 'ged', 'docs']">
+          Documents Classés
+        </a>
+      </li>
+      <li nz-menu-item nzmatchrouter>
+        <a [routerLink]="['/', 'api', 'ged', 'search']">
+          Recherche
+        </a>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+
+    <nz-header>
+      <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="isCollapsed = !isCollapsed"></i>
+    </nz-header>
+
+    <nz-content>
+      <nz-breadcrumb>
+        
+      </nz-breadcrumb>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+    
+  </nz-layout>
+</nz-layout>

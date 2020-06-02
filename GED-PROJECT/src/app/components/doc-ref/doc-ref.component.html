@@ -1,0 +1,46 @@
+<nz-steps [nzType]="navigation">
+  <nz-step class="nz-step-icon" nzIcon="tags"  nzTitle="Réferencement du document"></nz-step>
+</nz-steps>
+
+<div class="container" align="center">
+  <div class="row mt-3"></div>
+  <div class="row mt-3"></div>
+  <div class="row mt-3"></div>
+  <div class="row mt-3"></div>
+  <div class="row mt-3"></div>
+  <div nz-row>
+    
+    <div nz-col nzSpan="24">
+
+      <nz-tag [nzColor]="'#108ee9'" *ngFor="let tag of tags; let i = index" [nzMode]="i === 0 ? 'default' : 'closeable'"
+        (nzOnClose)="handleClose(tag)">
+        {{ sliceTagName(tag) }}
+      </nz-tag>
+
+      <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()">
+        <i nz-icon nzType="plus"></i>New Key Word
+      </nz-tag>
+
+      <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue"
+        style="width: 78px;" (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()" />
+
+    </div>
+  </div>
+  
+  <div class="row mt-3"></div>
+  <div class="row mt-3"></div>
+  <div nz-row>
+    <div nz-col nzSpan="6">
+      <button (click)="cleartabCodeAndValueCara()" routerLink="/api/ged/caracterisation" nz-button><i nz-icon nzType="left" nzTheme="outline"></i>Précédent</button>
+    </div>
+    <div nz-col nzSpan="6">
+    </div>
+    <div nz-col nzSpan="6">
+    </div>
+    <div nz-col nzSpan="6">
+      <button (click)="showConfirmRefe()" nz-button>
+        Suivant<i nz-icon nzType="right" nzTheme="outline"></i> <!-- routerLink="/api/ged/identification"  -->
+      </button>
+    </div>      
+  </div>
+</div>

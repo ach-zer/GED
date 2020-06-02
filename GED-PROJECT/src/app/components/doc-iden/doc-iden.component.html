@@ -1,0 +1,39 @@
+<nz-steps [nzType]="default">
+    <nz-step class="nz-step-icon" nzIcon="user" nzTitle="Identification du document"></nz-step>
+</nz-steps>
+
+<div class="container" align="center">
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div nz-row>
+        <div nz-col nzSpan="24">
+            <form nz-form class="ant-advanced-search-form" [nzLayout]="'inline'">
+                <!-- From the database -->
+                <nz-form-item *ngFor="let fieldIden of tabFieldIdenToUse">
+                    <nz-form-label nzFor={{fieldIden}}>{{fieldIden}}</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input cara!">
+                        <input nzSize="default" nz-input placeholder="Enter information" id={{fieldIden}}
+                            name={{fieldIden}} [(ngModel)]="this[fieldIden]" />
+                    </nz-form-control>
+                </nz-form-item>
+
+            </form>
+        </div>
+    </div>
+    <div class="row mt-3"></div>
+    <div class="row mt-3"></div>
+    <div nz-row>
+        <div nz-col nzSpan="8">
+            <button routerLink="/api/ged/referencement" nz-button>Précédent<i nz-icon nzType="left"
+                    nzTheme="outline"></i></button>
+        </div>
+        <div nz-col nzSpan="8"></div>
+        <div nz-col nzSpan="8">
+            <button  (click)="showConfirmIden()" nz-button> <!-- routerLink="/api/ged/validation" -->
+                Suivant                           
+                <i nz-icon nzType="right" nzTheme="outline"></i>
+            </button>
+        </div>
+    </div>
+</div>

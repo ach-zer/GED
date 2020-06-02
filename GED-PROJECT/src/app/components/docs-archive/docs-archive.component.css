@@ -1,0 +1,35 @@
+.inner-layout {
+  padding: 20px 0;
+  background: rgb(235, 229, 229);
+  height: 600px;
+  width: 1218px;
+  border-style: groove;
+}
+
+
+nz-sider{
+  position: relative;
+  left:18px;
+}
+
+
+.sider-menu {
+  height: 559px;
+  background: rgb(255, 255, 255);
+  overflow: scroll;
+}
+
+.inner-content {
+  padding: 0 24px;
+  min-height: 290px;
+  overflow: scroll;
+}
+
+.tree_archives {
+    position: relative;
+    left:38px;
+}
+
+[nz-button] {
+   color: #34495e;
+}
