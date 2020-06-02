@@ -1,0 +1,29 @@
+{
+  "SERVER_PORT" : 8083,
+  "LIMIT_UPLOADS": 50, // max data to upload
+  "DEV_ENV": true, // false for the prod env
+  "CROSS_DOMAIN": true,
+  "IP_CROSS_DOMAIN": "http://localhost:4001|http://localhost:4200|http://localhost:8080|http://localhost:4400|0:0:0:0:0:0:0:1:58614",
+  "HTTPS": {
+    "STATUS": false,
+    "TYPE": "JKS", // PEM or JKS
+    // JKS TYPE
+    "FILE_JKS": "key.jks",
+    "PWD": "AA19VIExq",
+
+    // PEM Type
+    "CHAIN": "chain.pem",
+    "CERT": "Certificat.pem",
+    "KEY": "private.pem",
+
+    "TLS_VERSION": "TLSv1.3"
+  },
+  "ORACLE" : {
+    "DATABASE_HOST": "localhost",
+    "DATABASE_LOGIN": "hr",
+    "DATABASE_PASSWORD": "hr",
+    "DATABASE_PORT": 1521,
+    "DATABASE_NAME": "firstdataba",
+    "DATE_FORMAT": "dd/MM/yyyy"
+  }
+}
