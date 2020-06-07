@@ -148,8 +148,8 @@
   </div>
 </div>
 <!-- to show the pdf -->
-<div>
-  <ng2-pdfjs-viewer #pdfViewerOnDemand [externalWindow]="true" [downloadFileName]="'mytestfile.pdf'"
+<div style="height: 600px;width: 700px;">
+  <ng2-pdfjs-viewer #pdfViewerOnDemand [externalWindow]="false" [downloadFileName]="'mytestfile.pdf'"
     [openFile]="true" [viewBookmark]="true" [download]="false"></ng2-pdfjs-viewer>
 </div>
 <div>

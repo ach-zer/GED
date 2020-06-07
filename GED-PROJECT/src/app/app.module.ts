@@ -37,6 +37,8 @@ import { AnnotationsDocComponent } from './components/annotations-doc/annotation
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { ClasseArchivesComponent } from './components/classe-archives/classe-archives.component';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 registerLocaleData(fr);
 
@@ -56,6 +58,7 @@ registerLocaleData(fr);
     DocsNtComponent,
     DocsNcComponent,
     AnnotationsDocComponent,
+    ClasseArchivesComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -80,7 +83,8 @@ registerLocaleData(fr);
     NzSpinModule,
     NzDescriptionsModule,
     NzAvatarModule,
-    NzTableModule
+    NzTableModule,
+    NzRadioModule
   ],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],
   bootstrap: [AppComponent]

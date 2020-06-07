@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 })
 export class DocsArchiveService {
 
+
+  dataCA = [];
+
   tabDesDoss = [];
   tabIdDoss = [];
   tabLen = [];
@@ -22,12 +25,12 @@ export class DocsArchiveService {
         private docs_nc_service: DocsNcService, private router: Router) {}
 
 
-    createArchive(STRUCT){
+  createArchive(STRUCT){
       let gUrl = "http://localhost:8083/api/dc/of/archive/create";
 
       let postData = {
         "STRUCT"  : STRUCT,
-     }
+      }
 
      this.http.post(gUrl, postData).toPromise().then(resp => {
         let response = JSON.parse(JSON.stringify(resp));
@@ -37,11 +40,11 @@ export class DocsArchiveService {
         //this.docs_nc_service.selectDocumentsIds().subscribe(dataCard => this.docs_nc_service.dataCard = dataCard);
      });
 
-    }
-
-
+  }
 
   selectArchives() : Observable<any> {
+
+    this.selectClassesArchives().subscribe(dataCA => this.dataCA = dataCA);
     this.load();
 
     this.tabDesDoss = [];
@@ -98,7 +101,7 @@ export class DocsArchiveService {
             {
               title: ""+des,
               key: ""+iddos,
-              expanded: true,
+              expanded: false,
               children: []
             }
           )
@@ -123,7 +126,7 @@ export class DocsArchiveService {
 
      let postData = {
         "IDEDOCBI"  : idedocbi,
-        "IDDOSS"    : idendoss
+        "IDDOSS"    : idendoss,
      }
 
      this.http.post(gUrl, postData).toPromise().then(resp => {
@@ -207,6 +210,40 @@ export class DocsArchiveService {
       nzTitle: 'Pour classer un document, veuillez cliquer une fois sur le nom du document à classer puis vous cliquez sur le nom du dossier que vous choisissez.',
     });
     setTimeout(() => modalMsg.destroy(), 10000);
+  }
+
+  selectClassesArchives(): Observable<any> {
+
+    this.dataCA = [];
+
+    this.load();
+
+    let gUrl = "http://localhost:8083/api/dc/of/classes/select";
+
+    this.http.get(gUrl).toPromise().then(resp => {
+      let data = JSON.parse(JSON.stringify(resp)).data.classes.data; // We must use the parse method to simplify
+      console.log(resp);
+      console.log(data);
+
+      if(data.length == 0){
+        return;
+      }
+
+      for (let i = 0 ; i < data.length ; i++){
+        this.dataCA.push({
+                            classe: data[i][0], 
+                            initial: data[i][1], 
+                            designation: data[i][2],
+                            designationCourte: data[i][3]
+        });
+      }
+
+
+    }).catch(resp => {
+      console.log("Problème au serveur");
+  });
+
+    return of(this.dataCA).pipe(delay( 2000 ));
   }
   
 }

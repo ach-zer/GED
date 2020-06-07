@@ -1,16 +1,18 @@
 <nz-layout class="inner-layout">
     <nz-sider nzWidth="250px" nzTheme="light">
         <ul nz-menu nzMode="inline" class="sider-menu">
-            <li nz-submenu nzOpen nzTitle="Dossiers" nzIcon="folder">
-                <div align="center">
-                    <nz-spin nzSimple [nzSpinning]="docs_archive_service.isSpinning" [nzSize]="'small'"></nz-spin>
-                </div>
-                
-                <div class="tree_archives" *ngIf="!docs_archive_service.isSpinning">
-                    <nz-tree [nzData]="docs_archive_service.t_nodes" nzShowLine (nzClick)="docs_archive_service.nzClassement($event);">
-                    </nz-tree>
-                </div>
-            </li>
+            <div *ngFor="let classe of docs_archive_service.dataCA">
+                <li nz-submenu [nzTitle]="classe.designation" nzIcon="folder">
+                    <div align="center">
+                        <nz-spin nzSimple [nzSpinning]="docs_archive_service.isSpinning" [nzSize]="'small'"></nz-spin>
+                    </div>
+                    
+                    <div class="tree_archives" *ngIf="!docs_archive_service.isSpinning">
+                        <nz-tree [nzData]="docs_archive_service.t_nodes" nzShowLine (nzClick)="docs_archive_service.nzClassement($event);">
+                        </nz-tree>
+                    </div>
+                </li>
+            </div>
         </ul>
     </nz-sider>
     <nz-content class="inner-content">

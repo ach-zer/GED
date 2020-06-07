@@ -1,0 +1,15 @@
+.inner-layout {
+    padding: 20px 0;
+    background: rgb(235, 229, 229);
+    height: 600px;
+    width: 1218px;
+    border-style: groove;
+  }
+    
+  
+.inner-content {
+    padding: 0 24px;
+    min-height: 290px;
+    overflow: scroll; /*To add a table*/
+}
+  

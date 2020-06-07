@@ -13,6 +13,7 @@ import { DocAnnotComponent } from './components/doc-annot/doc-annot.component';
 import { DocsNtComponent } from './components/docs-nt/docs-nt.component';
 import { DocsNcComponent } from './components/docs-nc/docs-nc.component';
 import { AnnotationsDocComponent } from './components/annotations-doc/annotations-doc.component';
+import { ClasseArchivesComponent } from './components/classe-archives/classe-archives.component';
 
 const routes: Routes = [
   //{ path: '', pathMatch: 'full', redirectTo: 'api/ged/aquisition' },
@@ -50,6 +51,7 @@ const routes: Routes = [
 ]},
   { path: 'api/ged/annotation', component: DocAnnotComponent },
   { path: 'api/ged/annotations_docs', component: AnnotationsDocComponent },
+  { path: 'api/ged/classe_archives', component: ClasseArchivesComponent },
   //{ path: '**', component: DocAcqComponent },
   //{ path: '**', component: HomeComponent } // If no matching route found, go back to home route
 ];

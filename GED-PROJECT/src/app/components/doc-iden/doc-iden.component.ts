@@ -16,29 +16,47 @@ export class DocIdenComponent implements OnInit {
   nbreFieldIden = 0;
   tabFieldIden: string[] = [];
   tabFieldIdenToUse: string[] = [];
+  CLAARCH = "";
 
   constructor(private http: HttpClient, private doc_iden_service: DocIdenService, 
               private doc_acq_service: DocAcqService, 
               private modal: NzModalService, 
-              private router: Router, private doc_fiche_service: DocFicheService) { }
+              private router: Router, private doc_fiche_service: DocFicheService) { 
+
+                this.tabFieldIden = [];
+                this.tabFieldIdenToUse = [];
+                this.CLAARCH = "";
+
+              }
 
   ngOnInit() {
+    //this.selectFieldIdentification();
+  }
+
+  selectFieldsIdenChoiceClass(){
+    console.log(this.CLAARCH);
+    this.doc_iden_service.CLAARCH = this.CLAARCH;
     this.selectFieldIdentification();
   }
 
 
   extractFieldIden() {
     this.tabFieldIden.forEach(element => {
-      if (element != "IDCLIENT")
+      if (element != "IDCLIENT" && element != "IDCOMPA")
         this.tabFieldIdenToUse.push(element);
     });
   }
 
   selectFieldIdentification() {
+    this.tabFieldIdenToUse = [];
     var gUrl = "http://localhost:8083/api/dc/of/doc/iden";
 
-    this.http.get(gUrl).toPromise().then(resp => {
-      let data = JSON.parse(JSON.stringify(resp)).data.fieldsClient.data;
+
+    let postData = {"CLAARCH" : this.CLAARCH};
+
+
+    this.http.post(gUrl, postData).toPromise().then(resp => {
+      let data = JSON.parse(JSON.stringify(resp)).data.fields.data;
       this.tabFieldIden = data;
       this.extractFieldIden();
     });
@@ -94,7 +112,20 @@ export class DocIdenComponent implements OnInit {
     let tabNameFieldIden: string[] = [];
     let tabValueFieldIden: string[] = [];
     let i = 0;
-    let procedure1 = "insert into GED_CLIENTS (";
+
+    let procedure1;
+
+    if(this.CLAARCH == "personne"){
+
+      procedure1 = "insert into GED_CLIENTS (";
+
+    }else if (this.CLAARCH == "compagnie"){
+
+      procedure1 = "insert into GED_COMPAGNIES (";
+
+    }
+
+    
     let procedure2 = ") VALUES (";
 
     for (let element of this.tabFieldIdenToUse) {

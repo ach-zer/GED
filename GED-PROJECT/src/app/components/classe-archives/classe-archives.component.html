@@ -1,0 +1,62 @@
+<nz-layout class="inner-layout">
+    
+    <nz-content class="inner-content">
+        <div nz-row>
+            <div nz-col nzSpan="24" align="center">
+                <h4>Table des classes d'archives</h4>
+            </div>
+        </div>
+        <div class="row mt-3"></div>
+        <div class="row mt-3"></div>
+        <div class="row mt-3"></div>
+        <div class="row mt-3"></div>
+        <div class="row mt-3"></div>
+        <div nz-row>
+            <div nz-col nzSpan="7"></div>
+            <div nz-col nzSpan="6">
+                <input nz-input placeholder="Entrez un nom d'une classe à créer" [(ngModel)]="NOM_CLASSE_ARCH" />
+            </div>
+            <div nz-col nzSpan="2"></div>
+            <div nz-col nzSpan="4">
+                <button nz-button nzType="primary" (click)="classe_archive_service.createClasseArchive(NOM_CLASSE_ARCH)">Ajouter</button>
+            </div>
+        </div>
+
+        
+        <div class="row mt-3"></div>
+        <div class="row mt-3"></div>
+        <div class="row mt-3" *ngIf="classe_archive_service.isSpinning"></div>
+        <div class="row mt-3" *ngIf="classe_archive_service.isSpinning"></div>
+        <div class="row mt-3" *ngIf="classe_archive_service.isSpinning"></div>
+        <div class="row mt-3" *ngIf="classe_archive_service.isSpinning"></div>
+        <div nz-col nzSpan="24" align="center">
+            <nz-spin nzSimple [nzSpinning]="classe_archive_service.isSpinning" [nzSize]="'large'"></nz-spin>
+        </div>
+        
+    <nz-table *ngIf="!classe_archive_service.isSpinning" #basicTable [nzData]="classe_archive_service.dataCA">
+            <thead>
+                <tr>
+                  <th>Classe</th>
+                  <th>Initial</th>
+                  <th>Désignation</th>
+                  <th>Désignation courte</th>
+                  <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of basicTable.data">
+                  <td>{{data.classe}}</td>
+                  <td>{{data.initial}}</td>
+                  <td>{{data.designation}}</td>
+                  <td>{{data.designationCourte}}</td>
+                  <th>
+                      <button nz-button nz-popover nzPopoverPlacement="bottom" nzPopoverContent="supprimer la classe d'archive" (click)="classe_archive_service.deleteClasseArchive(data.classe)">
+                          <i nz-icon nzType="delete" nzTheme="outline"></i>
+                      </button>
+                  </th>
+                </tr>
+            </tbody>
+        </nz-table>
+
+    </nz-content>
+</nz-layout>

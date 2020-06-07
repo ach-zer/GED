@@ -28,6 +28,11 @@
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline">
       <li nz-menu-item nzmatchrouter>
+        <a [routerLink]="['api', 'ged', 'classe_archives']">
+          Classes d'archives
+        </a>
+      </li>
+      <li nz-menu-item nzmatchrouter>
         <a [routerLink]="['api', 'ged', 'archive']">
           Archives
         </a>
@@ -45,6 +50,11 @@
       <li nz-menu-item nzmatchrouter>
         <a [routerLink]="['/', 'api', 'ged', 'search']">
           Recherche
+        </a>
+      </li>
+      <li nz-menu-item nzmatchrouter>
+        <a>
+          Notif et Alertes
         </a>
       </li>
     </ul>

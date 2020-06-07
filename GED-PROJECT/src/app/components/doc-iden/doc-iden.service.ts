@@ -14,19 +14,38 @@ export class DocIdenService {
   procedure: string = "";
   idClientInserted : string;
 
+  CLAARCH = ""
+
   constructor(private http: HttpClient, private doc_acq_service: DocAcqService) { }
 
   insertIdenDoc(IDEDOCBI) {
 
-    let gUrl = "http://localhost:8083/api/dc/of/doc/identification";
+    let gUrl;
 
-      let postData = {                    
+    let postData = {}
+
+    if(this.CLAARCH == "personne"){
+
+      gUrl = "http://localhost:8083/api/dc/of/doc/identification";
+
+      postData = {                    
         "procedure"  : this.procedure,
         "IDEDOCBI"   : ""+IDEDOCBI,
         "DOCNAME"    : this.doc_acq_service.docName,
         "NOM"        : this.tabValueFieldIden[0],
         "PRENOM"     : this.tabValueFieldIden[1]
       };
+    }else if(this.CLAARCH == "compagnie"){
+
+      gUrl = "http://localhost:8083/api/dc/of/doc/identification1";
+
+      postData = {
+        "procedure"  : this.procedure,
+        "IDEDOCBI"   : ""+IDEDOCBI,
+        "DOCNAME"    : this.doc_acq_service.docName,
+        "NOMCOMPAN"        : this.tabValueFieldIden[0]
+      }
+    }
 
       console.log(postData);
       this.http.post(gUrl, postData).subscribe(resp => {
