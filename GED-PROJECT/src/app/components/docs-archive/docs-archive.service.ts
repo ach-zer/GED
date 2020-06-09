@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 import { delay } from "rxjs/operators";
 import { NzModalService, NzFormatEmitEvent } from 'ng-zorro-antd';
 import { DocsNcService } from '../docs-nc/docs-nc.service';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,15 +13,25 @@ export class DocsArchiveService {
 
   dataCA = [];
 
+  //personnes
   tabDesDoss = [];
   tabIdDoss = [];
+  //compagnies
+  tabDesDossCo = [];
+  tabIdDossCo = [];
+
   tabLen = [];
+
   //data
   t_nodes = [];
+  t_nodes_co = [];
+
   isSpinning = false;
 
   constructor(private http: HttpClient, private modal: NzModalService, 
-        private docs_nc_service: DocsNcService, private router: Router) {}
+        private docs_nc_service: DocsNcService) {
+          //this.selectClassesArchives().subscribe(dataCA => this.dataCA = dataCA);
+        }
 
 
   createArchive(STRUCT){
@@ -44,12 +53,15 @@ export class DocsArchiveService {
 
   selectArchives() : Observable<any> {
 
-    this.selectClassesArchives().subscribe(dataCA => this.dataCA = dataCA);
     this.load();
 
     this.tabDesDoss = [];
     this.tabIdDoss = [];
     this.t_nodes = [];
+
+    this.tabDesDossCo = [];
+    this.tabIdDossCo = [];
+    this.t_nodes_co = [];
     
     let gUrl = "http://localhost:8083/api/dc/of/archives/ids";
 
@@ -63,24 +75,49 @@ export class DocsArchiveService {
         for(let j = 0; j < 2;j++){
 
           if( j == 0 ){
-            console.log("id : "+response[i][j]); // It's for Ids
-            this.tabIdDoss.push(response[i][j]);
+
+            if(response[i][j].indexOf("#") == response[i][j].lastIndexOf("#")){
+              console.log("id pers : "+response[i][j]); // It's for Ids
+              this.tabIdDoss.push(response[i][j]);
+            
+            }else{
+              console.log("id comp : "+response[i][j]); // It's for Ids
+              this.tabIdDossCo.push(response[i][j]);
+            }
+            
           }
             
           if( j == 1 ){
-            console.log("des : "+response[i][j]); // It's for Des
-            this.tabDesDoss.push(response[i][j]); 
+
+            if(response[i][j].indexOf("#") == response[i][j].lastIndexOf("#")){
+              console.log("des pers : "+response[i][j]); // It's for Des
+              this.tabDesDoss.push(response[i][j]); 
+            
+            }else{
+              console.log("des comp : "+response[i][j]); // It's for Des
+              this.tabDesDossCo.push(response[i][j]); 
+            }
+            
           }
 
         }
       }
 
       let i;
-      for(i = 0 ; i < this.tabDesDoss.length, i < this.tabIdDoss.length ; i++){
 
-          this.selectArchivesWithDocs(this.tabDesDoss[i], this.tabIdDoss[i], i); 
+      //compagnies
+      for(i = 0 ; i < this.tabDesDossCo.length, i < this.tabIdDossCo.length ; i++){        
+        this.selectArchivesWithDocs(this.tabDesDossCo[i], this.tabIdDossCo[i], i);
       }
+
+      let j;
+      //personnes
+      for(j = 0 ; j < this.tabDesDoss.length, j < this.tabIdDoss.length ; j++){
+          this.selectArchivesWithDocs(this.tabDesDoss[j], this.tabIdDoss[j], j); 
+      }
+
       console.log(this.t_nodes);
+      console.log(this.t_nodes_co);
 
     }).catch(resp => {
         console.log(" Problème au serveur ");
@@ -97,24 +134,55 @@ export class DocsArchiveService {
 
           let postData = {"IDDOSS" : iddos};
 
-          this.t_nodes.push(
-            {
-              title: ""+des,
-              key: ""+iddos,
-              expanded: false,
-              children: []
-            }
-          )
+          
 
           this.http.post(gUrl, postData).toPromise().then(resp => {
+
               let response = JSON.parse(JSON.stringify(resp)).data;
+              let designation = ""+des+""
+              let idendoss = ""+iddos+""
               
-              let j;
+
+              if(idendoss.indexOf("#") == idendoss.lastIndexOf("#")){
+                  // personne
+                  this.t_nodes.push(
+                    {
+                      title: ""+des,
+                      key: ""+iddos,
+                      expanded: false,
+                      children: []
+                    }
+                  );
+
+                  console.log(iddos +":::"+ response.length);
+
+                  let j;
           
-              for(j = 0 ; j < response.length ; j++){                         
-                console.log(response.children[j]);
-                this.t_nodes[i].children.push(response.children[j]);
-              }
+                  for(j = 0 ; j < response.length ; j++){                         
+                    console.log(response.children[j]);
+                    this.t_nodes[i].children.push(response.children[j]);
+                  }
+
+              }else {
+                  //compagnie
+                  this.t_nodes_co.push(
+                    {
+                      title: ""+des,
+                      key: ""+iddos,
+                      expanded: false,
+                      children: []
+                    }
+                  );
+
+                  console.log(iddos +"co:::"+ response.length);
+
+                  let j;
+          
+                  for(j = 0 ; j < response.length ; j++){                         
+                    console.log(response.children[j]);
+                    this.t_nodes_co[i].children.push(response.children[j]);
+                  }
+              }                                         
             
           });
   }

@@ -1,8 +1,8 @@
 <nz-layout class="inner-layout">
     <nz-sider nzWidth="250px" nzTheme="light">
         <ul nz-menu nzMode="inline" class="sider-menu">
-            <div *ngFor="let classe of docs_archive_service.dataCA">
-                <li nz-submenu [nzTitle]="classe.designation" nzIcon="folder">
+            <div >
+                <li nz-submenu nzTitle="personnes" nzIcon="folder">
                     <div align="center">
                         <nz-spin nzSimple [nzSpinning]="docs_archive_service.isSpinning" [nzSize]="'small'"></nz-spin>
                     </div>
@@ -12,12 +12,31 @@
                         </nz-tree>
                     </div>
                 </li>
+                <li nz-submenu nzTitle="compagnies" nzIcon="folder">
+                    <div align="center">
+                        <nz-spin nzSimple [nzSpinning]="docs_archive_service.isSpinning" [nzSize]="'small'"></nz-spin>
+                    </div>
+                    
+                    <div class="tree_archives" *ngIf="!docs_archive_service.isSpinning">
+                        <nz-tree [nzData]="docs_archive_service.t_nodes_co" nzShowLine (nzClick)="docs_archive_service.nzClassement($event);">
+                        </nz-tree>
+                    </div>
+                </li>
             </div>
         </ul>
     </nz-sider>
     <nz-content class="inner-content">
         <div nz-row>
             <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="1">
+                <a [routerLink]="[{outlets: {secondOutlet: 'docsAll'}}]">
+                    <button nz-button nz-popover nzPopoverPlacement="bottom" 
+                        nzPopoverContent="Aficher les documents classés" [nzSize]="small" nzShape="square">
+                        <i nz-icon nzType="qq-square" nzTheme="fill"></i>
+                    </button>
+                </a>
+            </div>
             <div nz-col nzSpan="1"></div>
             <div nz-col nzSpan="1">
                 <a [routerLink]="[{outlets: {secondOutlet: 'docsNC'}}]">
@@ -68,6 +87,7 @@
                   </nz-modal>                
             </div>
         </div>
+        
         <router-outlet name="secondOutlet"></router-outlet>
     </nz-content>
 </nz-layout>
