@@ -1,5 +1,5 @@
 --------------------------------------------------------
---  File created - Sunday-June-07-2020   
+--  File created - Tuesday-June-09-2020   
 --------------------------------------------------------
 DROP PACKAGE "HR"."DML_GED_ANN_DOC";
 DROP PACKAGE "HR"."DML_GED_ANN_TYPE";
@@ -476,18 +476,254 @@ BeIGeX67qXdeL/SAeEklgTO5JvAHAVY8d6qU58dlN2F4dJIOKyRzKBtt2Ho=
 
   GRANT EXECUTE ON "HR"."PLJSON" TO PUBLIC;
 --------------------------------------------------------
---  DDL for Type PLJSON_ELEMENT
+--  DDL for Type PLJSON_LIST
 --------------------------------------------------------
 
-  CREATE OR REPLACE TYPE "HR"."PLJSON_ELEMENT" force as object
-(
-  obj_type number
-)
-not final;
+  CREATE OR REPLACE TYPE "HR"."PLJSON_LIST" force under pljson_element (
+
+  /*
+  Copyright (c) 2010 Jonas Krogsboell
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+  */
+
+  /**
+   * <p>This package defines <em>PL/JSON</em>'s representation of the JSON
+   * array type, e.g. <code>[1, 2, "foo", "bar"]</code>.</p>
+   *
+   * <p>The primary method exported by this package is the <code>pljson_list</code>
+   * method.</p>
+   *
+   * <strong>Example:</strong>
+   *
+   * <pre>
+   * declare
+   *   myarr pljson_list := pljson_list('[1, 2, "foo", "bar"]');
+   * begin
+   *   myarr.get(1).print(); // => dbms_output.put_line(1)
+   *   myarr.get(3).print(); // => dbms_output.put_line('foo')
+   * end;
+   * </pre>
+   *
+   * @headcom
+   */
+
+  /** Private variable for internal processing. */
+  list_data pljson_value_array,
+
+  /**
+   * <p>Create an empty list.</p>
+   *
+   * <pre>
+   * declare
+   *   myarr pljson_list := pljson_list();
+   * begin
+   *   dbms_output.put_line(myarr.count()); // => 0
+   * end;
+   *
+   * @return An instance of <code>pljson_list</code>.
+   */
+  constructor function pljson_list return self as result,
+
+  /**
+   * <p>Create an instance from a given JSON array representation.</p>
+   *
+   * <pre>
+   * declare
+   *   myarr pljson_list := pljson_list('[1, 2, "foo", "bar"]');
+   * begin
+   *   myarr.get(1).print(); // => dbms_output.put_line(1)
+   *   myarr.get(3).print(); // => dbms_output.put_line('foo')
+   * end;
+   * </pre>
+   *
+   * @param str The JSON array string to parse.
+   * @return An instance of <code>pljson_list</code>.
+   */
+  constructor function pljson_list(str varchar2) return self as result,
+
+  /**
+   * <p>Create an instance from a given JSON array representation stored in
+   * a <code>CLOB</code>.</p>
+   *
+   * @param str The <code>CLOB</code> to parse.
+   * @return An instance of <code>pljson_list</code>.
+   */
+  constructor function pljson_list(str clob) return self as result,
+
+  /**
+   * <p>Create an instance from a given JSON array representation stored in
+   * a <code>BLOB</code>.</p>
+   *
+   * @param str The <code>BLOB</code> to parse.
+   * @param charset The character set of the BLOB data (defaults to UTF-8).
+   * @return An instance of <code>pljson_list</code>.
+   */
+  constructor function pljson_list(str blob, charset varchar2 default 'UTF8') return self as result,
+
+  /**
+   * <p>Create an instance instance from a given table of string values of type varchar2.</p>
+   *
+   * @param str_array The pljson_varray (table of varchar2) of string values.
+   * @return An instance of <code>pljson_list</code>.
+   */
+  constructor function pljson_list(str_array pljson_varray) return self as result,
+
+  /**
+   * <p>Create an instance instance from a given table of string values of type varchar2.</p>
+   *
+   * @param str_array The pljson_varray (table of varchar2) of string values.
+   * @return An instance of <code>pljson_list</code>.
+   */
+  constructor function pljson_list(num_array pljson_narray) return self as result,
+
+  /**
+   * <p>Create an instance from a given instance of <code>pljson_value</code>
+   * that represents an array.</p>
+   *
+   * @param elem The <code>pljson_value</code> to cast to a <code>pljson_list</code>.
+   * @return An instance of <code>pljson_list</code>.
+   */
+  constructor function pljson_list(elem pljson_value) return self as result,
+
+  member procedure append(self in out nocopy pljson_list, elem pljson_value, position pls_integer default null),
+  member procedure append(self in out nocopy pljson_list, elem varchar2, position pls_integer default null),
+  member procedure append(self in out nocopy pljson_list, elem number, position pls_integer default null),
+  /* E.I.Sarmas (github.com/dsnz)   2016-12-01   support for binary_double numbers */
+  member procedure append(self in out nocopy pljson_list, elem binary_double, position pls_integer default null),
+  member procedure append(self in out nocopy pljson_list, elem boolean, position pls_integer default null),
+  member procedure append(self in out nocopy pljson_list, elem pljson_list, position pls_integer default null),
+
+  member procedure replace(self in out nocopy pljson_list, position pls_integer, elem pljson_value),
+  member procedure replace(self in out nocopy pljson_list, position pls_integer, elem varchar2),
+  member procedure replace(self in out nocopy pljson_list, position pls_integer, elem number),
+  /* E.I.Sarmas (github.com/dsnz)   2016-12-01   support for binary_double numbers */
+  member procedure replace(self in out nocopy pljson_list, position pls_integer, elem binary_double),
+  member procedure replace(self in out nocopy pljson_list, position pls_integer, elem boolean),
+  member procedure replace(self in out nocopy pljson_list, position pls_integer, elem pljson_list),
+
+  member function count return number,
+  member procedure remove(self in out nocopy pljson_list, position pls_integer),
+  member procedure remove_first(self in out nocopy pljson_list),
+  member procedure remove_last(self in out nocopy pljson_list),
+  member function get(position pls_integer) return pljson_value,
+  member function head return pljson_value,
+  member function last return pljson_value,
+  member function tail return pljson_list,
+
+  /* Output methods */
+  member function to_char(spaces boolean default true, chars_per_line number default 0) return varchar2,
+  member function to_clob(self in pljson_list, spaces boolean default false, chars_per_line number default 0, erase_clob boolean default true) return clob,
+  member procedure to_clob(self in pljson_list, buf in out nocopy clob, spaces boolean default false, chars_per_line number default 0, erase_clob boolean default true),
+  member procedure print(self in pljson_list, spaces boolean default true, chars_per_line number default 8192, jsonp varchar2 default null), --32512 is maximum
+  member procedure htp(self in pljson_list, spaces boolean default false, chars_per_line number default 0, jsonp varchar2 default null),
+
+  /* json path */
+  member function path(json_path varchar2, base number default 1) return pljson_value,
+  /* json path_put */
+  member procedure path_put(self in out nocopy pljson_list, json_path varchar2, elem pljson_value, base number default 1),
+  member procedure path_put(self in out nocopy pljson_list, json_path varchar2, elem varchar2, base number default 1),
+  member procedure path_put(self in out nocopy pljson_list, json_path varchar2, elem number, base number default 1),
+  /* E.I.Sarmas (github.com/dsnz)   2016-12-01   support for binary_double numbers */
+  member procedure path_put(self in out nocopy pljson_list, json_path varchar2, elem binary_double, base number default 1),
+  member procedure path_put(self in out nocopy pljson_list, json_path varchar2, elem boolean, base number default 1),
+  member procedure path_put(self in out nocopy pljson_list, json_path varchar2, elem pljson_list, base number default 1),
+
+  /* json path_remove */
+  member procedure path_remove(self in out nocopy pljson_list, json_path varchar2, base number default 1),
+
+  member function to_json_value return pljson_value
+  /* --backwards compatibility
+  member procedure add_elem(self in out nocopy json_list, elem json_value, position pls_integer default null),
+  member procedure add_elem(self in out nocopy json_list, elem varchar2, position pls_integer default null),
+  member procedure add_elem(self in out nocopy json_list, elem number, position pls_integer default null),
+  member procedure add_elem(self in out nocopy json_list, elem boolean, position pls_integer default null),
+  member procedure add_elem(self in out nocopy json_list, elem json_list, position pls_integer default null),
+
+  member procedure set_elem(self in out nocopy json_list, position pls_integer, elem json_value),
+  member procedure set_elem(self in out nocopy json_list, position pls_integer, elem varchar2),
+  member procedure set_elem(self in out nocopy json_list, position pls_integer, elem number),
+  member procedure set_elem(self in out nocopy json_list, position pls_integer, elem boolean),
+  member procedure set_elem(self in out nocopy json_list, position pls_integer, elem json_list),
+
+  member procedure remove_elem(self in out nocopy json_list, position pls_integer),
+  member function get_elem(position pls_integer) return json_value,
+  member function get_first return json_value,
+  member function get_last return json_value
+--*/
+
+) not final;
+/
+CREATE OR REPLACE TYPE BODY "HR"."PLJSON_LIST" wrapped
+a000000
+b2
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+e
+3086 861
+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
+aEZeEq63p20mfPiqBj2WtR3X3xzc
 
 /
 
-  GRANT EXECUTE ON "HR"."PLJSON_ELEMENT" TO PUBLIC;
+  GRANT EXECUTE ON "HR"."PLJSON_LIST" TO PUBLIC;
 --------------------------------------------------------
 --  DDL for Type PLJSON_VALUE
 --------------------------------------------------------
@@ -806,264 +1042,6 @@ aj7Gzps1UaW82d6dAi9bTAZ3R4sg8BoN/gUHY5Wqbsq57Z26EOh4Pbcr6WduEikk0Dh2t7Uk
 
   GRANT EXECUTE ON "HR"."PLJSON_VALUE" TO PUBLIC;
 --------------------------------------------------------
---  DDL for Type PLJSON_VALUE_ARRAY
---------------------------------------------------------
-
-  CREATE OR REPLACE TYPE "HR"."PLJSON_VALUE_ARRAY" as table of pljson_value;
-
-/
-
-  GRANT EXECUTE ON "HR"."PLJSON_VALUE_ARRAY" TO PUBLIC;
---------------------------------------------------------
---  DDL for Type PLJSON_LIST
---------------------------------------------------------
-
-  CREATE OR REPLACE TYPE "HR"."PLJSON_LIST" force under pljson_element (
-
-  /*
-  Copyright (c) 2010 Jonas Krogsboell
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in
-  all copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-  THE SOFTWARE.
-  */
-
-  /**
-   * <p>This package defines <em>PL/JSON</em>'s representation of the JSON
-   * array type, e.g. <code>[1, 2, "foo", "bar"]</code>.</p>
-   *
-   * <p>The primary method exported by this package is the <code>pljson_list</code>
-   * method.</p>
-   *
-   * <strong>Example:</strong>
-   *
-   * <pre>
-   * declare
-   *   myarr pljson_list := pljson_list('[1, 2, "foo", "bar"]');
-   * begin
-   *   myarr.get(1).print(); // => dbms_output.put_line(1)
-   *   myarr.get(3).print(); // => dbms_output.put_line('foo')
-   * end;
-   * </pre>
-   *
-   * @headcom
-   */
-
-  /** Private variable for internal processing. */
-  list_data pljson_value_array,
-
-  /**
-   * <p>Create an empty list.</p>
-   *
-   * <pre>
-   * declare
-   *   myarr pljson_list := pljson_list();
-   * begin
-   *   dbms_output.put_line(myarr.count()); // => 0
-   * end;
-   *
-   * @return An instance of <code>pljson_list</code>.
-   */
-  constructor function pljson_list return self as result,
-
-  /**
-   * <p>Create an instance from a given JSON array representation.</p>
-   *
-   * <pre>
-   * declare
-   *   myarr pljson_list := pljson_list('[1, 2, "foo", "bar"]');
-   * begin
-   *   myarr.get(1).print(); // => dbms_output.put_line(1)
-   *   myarr.get(3).print(); // => dbms_output.put_line('foo')
-   * end;
-   * </pre>
-   *
-   * @param str The JSON array string to parse.
-   * @return An instance of <code>pljson_list</code>.
-   */
-  constructor function pljson_list(str varchar2) return self as result,
-
-  /**
-   * <p>Create an instance from a given JSON array representation stored in
-   * a <code>CLOB</code>.</p>
-   *
-   * @param str The <code>CLOB</code> to parse.
-   * @return An instance of <code>pljson_list</code>.
-   */
-  constructor function pljson_list(str clob) return self as result,
-
-  /**
-   * <p>Create an instance from a given JSON array representation stored in
-   * a <code>BLOB</code>.</p>
-   *
-   * @param str The <code>BLOB</code> to parse.
-   * @param charset The character set of the BLOB data (defaults to UTF-8).
-   * @return An instance of <code>pljson_list</code>.
-   */
-  constructor function pljson_list(str blob, charset varchar2 default 'UTF8') return self as result,
-
-  /**
-   * <p>Create an instance instance from a given table of string values of type varchar2.</p>
-   *
-   * @param str_array The pljson_varray (table of varchar2) of string values.
-   * @return An instance of <code>pljson_list</code>.
-   */
-  constructor function pljson_list(str_array pljson_varray) return self as result,
-
-  /**
-   * <p>Create an instance instance from a given table of string values of type varchar2.</p>
-   *
-   * @param str_array The pljson_varray (table of varchar2) of string values.
-   * @return An instance of <code>pljson_list</code>.
-   */
-  constructor function pljson_list(num_array pljson_narray) return self as result,
-
-  /**
-   * <p>Create an instance from a given instance of <code>pljson_value</code>
-   * that represents an array.</p>
-   *
-   * @param elem The <code>pljson_value</code> to cast to a <code>pljson_list</code>.
-   * @return An instance of <code>pljson_list</code>.
-   */
-  constructor function pljson_list(elem pljson_value) return self as result,
-
-  member procedure append(self in out nocopy pljson_list, elem pljson_value, position pls_integer default null),
-  member procedure append(self in out nocopy pljson_list, elem varchar2, position pls_integer default null),
-  member procedure append(self in out nocopy pljson_list, elem number, position pls_integer default null),
-  /* E.I.Sarmas (github.com/dsnz)   2016-12-01   support for binary_double numbers */
-  member procedure append(self in out nocopy pljson_list, elem binary_double, position pls_integer default null),
-  member procedure append(self in out nocopy pljson_list, elem boolean, position pls_integer default null),
-  member procedure append(self in out nocopy pljson_list, elem pljson_list, position pls_integer default null),
-
-  member procedure replace(self in out nocopy pljson_list, position pls_integer, elem pljson_value),
-  member procedure replace(self in out nocopy pljson_list, position pls_integer, elem varchar2),
-  member procedure replace(self in out nocopy pljson_list, position pls_integer, elem number),
-  /* E.I.Sarmas (github.com/dsnz)   2016-12-01   support for binary_double numbers */
-  member procedure replace(self in out nocopy pljson_list, position pls_integer, elem binary_double),
-  member procedure replace(self in out nocopy pljson_list, position pls_integer, elem boolean),
-  member procedure replace(self in out nocopy pljson_list, position pls_integer, elem pljson_list),
-
-  member function count return number,
-  member procedure remove(self in out nocopy pljson_list, position pls_integer),
-  member procedure remove_first(self in out nocopy pljson_list),
-  member procedure remove_last(self in out nocopy pljson_list),
-  member function get(position pls_integer) return pljson_value,
-  member function head return pljson_value,
-  member function last return pljson_value,
-  member function tail return pljson_list,
-
-  /* Output methods */
-  member function to_char(spaces boolean default true, chars_per_line number default 0) return varchar2,
-  member function to_clob(self in pljson_list, spaces boolean default false, chars_per_line number default 0, erase_clob boolean default true) return clob,
-  member procedure to_clob(self in pljson_list, buf in out nocopy clob, spaces boolean default false, chars_per_line number default 0, erase_clob boolean default true),
-  member procedure print(self in pljson_list, spaces boolean default true, chars_per_line number default 8192, jsonp varchar2 default null), --32512 is maximum
-  member procedure htp(self in pljson_list, spaces boolean default false, chars_per_line number default 0, jsonp varchar2 default null),
-
-  /* json path */
-  member function path(json_path varchar2, base number default 1) return pljson_value,
-  /* json path_put */
-  member procedure path_put(self in out nocopy pljson_list, json_path varchar2, elem pljson_value, base number default 1),
-  member procedure path_put(self in out nocopy pljson_list, json_path varchar2, elem varchar2, base number default 1),
-  member procedure path_put(self in out nocopy pljson_list, json_path varchar2, elem number, base number default 1),
-  /* E.I.Sarmas (github.com/dsnz)   2016-12-01   support for binary_double numbers */
-  member procedure path_put(self in out nocopy pljson_list, json_path varchar2, elem binary_double, base number default 1),
-  member procedure path_put(self in out nocopy pljson_list, json_path varchar2, elem boolean, base number default 1),
-  member procedure path_put(self in out nocopy pljson_list, json_path varchar2, elem pljson_list, base number default 1),
-
-  /* json path_remove */
-  member procedure path_remove(self in out nocopy pljson_list, json_path varchar2, base number default 1),
-
-  member function to_json_value return pljson_value
-  /* --backwards compatibility
-  member procedure add_elem(self in out nocopy json_list, elem json_value, position pls_integer default null),
-  member procedure add_elem(self in out nocopy json_list, elem varchar2, position pls_integer default null),
-  member procedure add_elem(self in out nocopy json_list, elem number, position pls_integer default null),
-  member procedure add_elem(self in out nocopy json_list, elem boolean, position pls_integer default null),
-  member procedure add_elem(self in out nocopy json_list, elem json_list, position pls_integer default null),
-
-  member procedure set_elem(self in out nocopy json_list, position pls_integer, elem json_value),
-  member procedure set_elem(self in out nocopy json_list, position pls_integer, elem varchar2),
-  member procedure set_elem(self in out nocopy json_list, position pls_integer, elem number),
-  member procedure set_elem(self in out nocopy json_list, position pls_integer, elem boolean),
-  member procedure set_elem(self in out nocopy json_list, position pls_integer, elem json_list),
-
-  member procedure remove_elem(self in out nocopy json_list, position pls_integer),
-  member function get_elem(position pls_integer) return json_value,
-  member function get_first return json_value,
-  member function get_last return json_value
---*/
-
-) not final;
-/
-CREATE OR REPLACE TYPE BODY "HR"."PLJSON_LIST" wrapped
-a000000
-b2
-abcd
-abcd
-abcd
-abcd
-abcd
-abcd
-abcd
-abcd
-abcd
-abcd
-abcd
-abcd
-abcd
-abcd
-abcd
-e
-3086 861
-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
-aEZeEq63p20mfPiqBj2WtR3X3xzc
-
-/
-
-  GRANT EXECUTE ON "HR"."PLJSON_LIST" TO PUBLIC;
---------------------------------------------------------
 --  DDL for Package DML_GED_ANN_DOC
 --------------------------------------------------------
 
@@ -1173,7 +1151,7 @@ END dml_ged_classe_arch;
         v_params    IN pljson,
         v_err       OUT VARCHAR2,
         v_res       OUT pljson
-    );
+    ); 
     PROCEDURE select_fields_clients (
         v_params   IN pljson,
         v_err      OUT VARCHAR2,

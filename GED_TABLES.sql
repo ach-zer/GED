@@ -1,5 +1,5 @@
 --------------------------------------------------------
---  File created - Sunday-June-07-2020   
+--  File created - Tuesday-June-09-2020   
 --------------------------------------------------------
 DROP TABLE "HR"."GED_ANN_DOC" cascade constraints;
 DROP TABLE "HR"."GED_ANN_TYPE" cascade constraints;
@@ -15,6 +15,7 @@ DROP TABLE "HR"."GED_REFE_DOC_BIN" cascade constraints;
 DROP TABLE "HR"."GED_STRUCTURE_ARCH" cascade constraints;
 DROP TABLE "HR"."GED_TYPE" cascade constraints;
 DROP TABLE "HR"."GED_TYPE_DOC_BIN" cascade constraints;
+DROP TABLE "HR"."WEB_LOGS" cascade constraints;
 --------------------------------------------------------
 --  DDL for Table GED_ANN_DOC
 --------------------------------------------------------
@@ -230,10 +231,30 @@ DROP TABLE "HR"."GED_TYPE_DOC_BIN" cascade constraints;
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS" ;
 --------------------------------------------------------
+--  DDL for Table WEB_LOGS
+--------------------------------------------------------
+
+  CREATE TABLE "HR"."WEB_LOGS" 
+   (	"MESS_UID" RAW(32), 
+	"MESS_CLT" VARCHAR2(600 BYTE), 
+	"MESSERRO" VARCHAR2(1000 BYTE), 
+	"TYPEMESS" VARCHAR2(2 BYTE), 
+	"OWNER_NAME" VARCHAR2(30 BYTE), 
+	"CALLER_NAME" VARCHAR2(30 BYTE), 
+	"LINE_NUMBER" NUMBER, 
+	"CALLER_TYPE" VARCHAR2(100 BYTE), 
+	"DATEERRO" DATE DEFAULT sysdate, 
+	"CREATEBY" VARCHAR2(30 BYTE) DEFAULT upper(user)
+   ) SEGMENT CREATION IMMEDIATE 
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS" ;
+--------------------------------------------------------
 --  DDL for Sequence GED_CLASSE_ARCH_SEQ
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "HR"."GED_CLASSE_ARCH_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 8 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "HR"."GED_CLASSE_ARCH_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 28 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence GED_CLIENTS_SEQ
 --------------------------------------------------------
@@ -243,19 +264,18 @@ DROP TABLE "HR"."GED_TYPE_DOC_BIN" cascade constraints;
 --  DDL for Sequence GED_COMPAGNIES_SEQ1
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "HR"."GED_COMPAGNIES_SEQ1"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "HR"."GED_COMPAGNIES_SEQ1"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 22 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence GED_DOC_BIN_SEQ
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "HR"."GED_DOC_BIN_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 510 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "HR"."GED_DOC_BIN_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 514 CACHE 20 NOORDER  NOCYCLE ;
 REM INSERTING into HR.GED_ANN_DOC
 SET DEFINE OFF;
 Insert into HR.GED_ANN_DOC (CODETYPAN,TEXTANNO,DATEANNO,IDEDOCBI) values ('Refus','Je refuse ce document',to_date('02-JUN-20','DD-MON-RR'),483);
 Insert into HR.GED_ANN_DOC (CODETYPAN,TEXTANNO,DATEANNO,IDEDOCBI) values ('Decision','Bonne décision',to_date('25-MAY-20','DD-MON-RR'),484);
 Insert into HR.GED_ANN_DOC (CODETYPAN,TEXTANNO,DATEANNO,IDEDOCBI) values ('Avis','C''est mon avis',to_date('26-MAY-20','DD-MON-RR'),486);
 Insert into HR.GED_ANN_DOC (CODETYPAN,TEXTANNO,DATEANNO,IDEDOCBI) values ('Confirmation','Bonne confirmation',to_date('25-MAY-20','DD-MON-RR'),484);
-Insert into HR.GED_ANN_DOC (CODETYPAN,TEXTANNO,DATEANNO,IDEDOCBI) values ('Decision','Bonne décision',to_date('02-JUN-20','DD-MON-RR'),488);
 REM INSERTING into HR.GED_ANN_TYPE
 SET DEFINE OFF;
 Insert into HR.GED_ANN_TYPE (CODETYPAN) values ('Avis');
@@ -278,13 +298,11 @@ Insert into HR.GED_CARA (CODECARA,IDETYPDO,VALECARA) values ('DTN','CN','Date de
 Insert into HR.GED_CARA (CODECARA,IDETYPDO,VALECARA) values ('LN','CN','Lieu de naissance');
 REM INSERTING into HR.GED_CARA_DOC_BIN
 SET DEFINE OFF;
-Insert into HR.GED_CARA_DOC_BIN (CODECARA,LIBECARA,TYPECARA,DEFAVALE,CARAOBLI,ORDECARA,NOM_TABL,COLO_CLE,COLOLIBL,POIDCARA,IDEDOCBI) values ('NUP','JK29594',null,null,null,null,null,null,null,null,493);
-Insert into HR.GED_CARA_DOC_BIN (CODECARA,LIBECARA,TYPECARA,DEFAVALE,CARAOBLI,ORDECARA,NOM_TABL,COLO_CLE,COLOLIBL,POIDCARA,IDEDOCBI) values ('CAT','Voiture',null,null,null,null,null,null,null,null,493);
-Insert into HR.GED_CARA_DOC_BIN (CODECARA,LIBECARA,TYPECARA,DEFAVALE,CARAOBLI,ORDECARA,NOM_TABL,COLO_CLE,COLOLIBL,POIDCARA,IDEDOCBI) values ('VIP','kkk',null,null,null,null,null,null,null,null,493);
 REM INSERTING into HR.GED_CLASSE_ARCH
 SET DEFINE OFF;
 Insert into HR.GED_CLASSE_ARCH (IDECLAAR,INICLAAR,DESCLAAR,DESCOUCL) values (6,'cl','personnes','personnes');
 Insert into HR.GED_CLASSE_ARCH (IDECLAAR,INICLAAR,DESCLAAR,DESCOUCL) values (7,'co','compagnies','compagnies');
+Insert into HR.GED_CLASSE_ARCH (IDECLAAR,INICLAAR,DESCLAAR,DESCOUCL) values (8,'in','intermédiaire','intermédiaire');
 REM INSERTING into HR.GED_CLIENTS
 SET DEFINE OFF;
 Insert into HR.GED_CLIENTS (IDCLIENT,PRENOM,NOM) values (131,'khalaf','bouhmadi');
@@ -292,21 +310,16 @@ Insert into HR.GED_CLIENTS (IDCLIENT,PRENOM,NOM) values (130,'achraf','zeroual')
 REM INSERTING into HR.GED_COMPAGNIES
 SET DEFINE OFF;
 Insert into HR.GED_COMPAGNIES (IDCOMPA,NOM_COMPAGNIE) values (1,'void');
+Insert into HR.GED_COMPAGNIES (IDCOMPA,NOM_COMPAGNIE) values (2,'ramsa');
 REM INSERTING into HR.GED_DOC_BIN
 SET DEFINE OFF;
-Insert into HR.GED_DOC_BIN (IDEDOCBI,IDCLIENT,IDCOMPA) values (488,null,null);
 Insert into HR.GED_DOC_BIN (IDEDOCBI,IDCLIENT,IDCOMPA) values (486,131,null);
-Insert into HR.GED_DOC_BIN (IDEDOCBI,IDCLIENT,IDCOMPA) values (493,null,1);
 Insert into HR.GED_DOC_BIN (IDEDOCBI,IDCLIENT,IDCOMPA) values (484,130,null);
 Insert into HR.GED_DOC_BIN (IDEDOCBI,IDCLIENT,IDCOMPA) values (483,131,null);
-Insert into HR.GED_DOC_BIN (IDEDOCBI,IDCLIENT,IDCOMPA) values (489,null,null);
 REM INSERTING into HR.GED_FICHE_DOC_BIN
 SET DEFINE OFF;
-Insert into HR.GED_FICHE_DOC_BIN (DESDOCBI,EXTDOCBI,CLEDOSAR,SOUDOCBI,AUTDOCBI,DATDOCBI,REFDOCBI,DATERECE,VERDOCBI,RESDOCBI,NOMBPAGE,DATEENTR,DATETYPA,DATECLAS,IDEDOCBI) values ('logo_ramsa','.pdf','orsys#:logo_ramsa','Source 1','achraf',to_date('02-JUN-20','DD-MON-RR'),'Ref 1',to_date('02-JUN-20','DD-MON-RR'),'Version 1','C''est mon res',1,to_date('02-JUN-20','DD-MON-RR'),to_date('02-JUN-20','DD-MON-RR'),to_date('02-JUN-20','DD-MON-RR'),489);
-Insert into HR.GED_FICHE_DOC_BIN (DESDOCBI,EXTDOCBI,CLEDOSAR,SOUDOCBI,AUTDOCBI,DATDOCBI,REFDOCBI,DATERECE,VERDOCBI,RESDOCBI,NOMBPAGE,DATEENTR,DATETYPA,DATECLAS,IDEDOCBI) values ('certificat_scolarité','.pdf','void#1:certificat_scolarité','Source 1','achraf',to_date('07-JUN-20','DD-MON-RR'),'Ref 1',to_date('07-JUN-20','DD-MON-RR'),'V 2','klmmmlml',1,to_date('07-JUN-20','DD-MON-RR'),to_date('07-JUN-20','DD-MON-RR'),to_date('07-JUN-20','DD-MON-RR'),493);
 Insert into HR.GED_FICHE_DOC_BIN (DESDOCBI,EXTDOCBI,CLEDOSAR,SOUDOCBI,AUTDOCBI,DATDOCBI,REFDOCBI,DATERECE,VERDOCBI,RESDOCBI,NOMBPAGE,DATEENTR,DATETYPA,DATECLAS,IDEDOCBI) values ('bac_document','.pdf','bouhmadi#131:bac_document','Source 1','achraf',to_date('25-MAY-20','DD-MON-RR'),'Ref 1',to_date('25-MAY-20','DD-MON-RR'),'Version 1','qqqqqqqqqqqqqqqqqqqqq',1,to_date('25-MAY-20','DD-MON-RR'),to_date('25-MAY-20','DD-MON-RR'),to_date('25-MAY-20','DD-MON-RR'),486);
 Insert into HR.GED_FICHE_DOC_BIN (DESDOCBI,EXTDOCBI,CLEDOSAR,SOUDOCBI,AUTDOCBI,DATDOCBI,REFDOCBI,DATERECE,VERDOCBI,RESDOCBI,NOMBPAGE,DATEENTR,DATETYPA,DATECLAS,IDEDOCBI) values ('couverture_medicale','.pdf','zeroual#130:couverture_medicale','Source 1','achraf',to_date('25-MAY-20','DD-MON-RR'),'Ref 1',to_date('25-MAY-20','DD-MON-RR'),'Version 1','kkkkkkkkkkkkkkkk',1,to_date('25-MAY-20','DD-MON-RR'),to_date('25-MAY-20','DD-MON-RR'),to_date('25-MAY-20','DD-MON-RR'),484);
-Insert into HR.GED_FICHE_DOC_BIN (DESDOCBI,EXTDOCBI,CLEDOSAR,SOUDOCBI,AUTDOCBI,DATDOCBI,REFDOCBI,DATERECE,VERDOCBI,RESDOCBI,NOMBPAGE,DATEENTR,DATETYPA,DATECLAS,IDEDOCBI) values ('curicculum_vitae','.pdf','orsys#:curicculum_vitae','Source 1','Achraf',to_date('26-MAY-20','DD-MON-RR'),'Ref 1',to_date('26-MAY-20','DD-MON-RR'),'Version 1','oooooooooooooooooooooo',1,to_date('26-MAY-20','DD-MON-RR'),to_date('02-JUN-20','DD-MON-RR'),to_date('02-JUN-20','DD-MON-RR'),488);
 Insert into HR.GED_FICHE_DOC_BIN (DESDOCBI,EXTDOCBI,CLEDOSAR,SOUDOCBI,AUTDOCBI,DATDOCBI,REFDOCBI,DATERECE,VERDOCBI,RESDOCBI,NOMBPAGE,DATEENTR,DATETYPA,DATECLAS,IDEDOCBI) values ('carte_nationale','.pdf','bouhmadi#131:carte_nationale','Source 1','achraf',to_date('25-MAY-20','DD-MON-RR'),'Ref 1',to_date('25-MAY-20','DD-MON-RR'),'Version 1','lllllllllllllllllllllllllllllllllllllll',1,to_date('25-MAY-20','DD-MON-RR'),to_date('25-MAY-20','DD-MON-RR'),to_date('25-MAY-20','DD-MON-RR'),483);
 REM INSERTING into HR.GED_REFE
 SET DEFINE OFF;
@@ -321,20 +334,15 @@ Insert into HR.GED_REFE (IDETYPDO,MOT_CLE) values ('CV','curriculum');
 Insert into HR.GED_REFE (IDETYPDO,MOT_CLE) values ('CV','curriculum  vitae');
 REM INSERTING into HR.GED_REFE_DOC_BIN
 SET DEFINE OFF;
-Insert into HR.GED_REFE_DOC_BIN (MOT_CLE,IDEDOCBI) values ('kk',493);
 Insert into HR.GED_REFE_DOC_BIN (MOT_CLE,IDEDOCBI) values ('CIN',483);
 Insert into HR.GED_REFE_DOC_BIN (MOT_CLE,IDEDOCBI) values ('carte',483);
 Insert into HR.GED_REFE_DOC_BIN (MOT_CLE,IDEDOCBI) values ('carte nationale',483);
 Insert into HR.GED_REFE_DOC_BIN (MOT_CLE,IDEDOCBI) values ('cart',483);
-Insert into HR.GED_REFE_DOC_BIN (MOT_CLE,IDEDOCBI) values ('curriculum',488);
-Insert into HR.GED_REFE_DOC_BIN (MOT_CLE,IDEDOCBI) values ('curriculum  vitae',488);
 REM INSERTING into HR.GED_STRUCTURE_ARCH
 SET DEFINE OFF;
 Insert into HR.GED_STRUCTURE_ARCH (IDENDOSS,IDEDOSPA,DESIDOSS,ORDRAFFI,TYPEDOSS,IDECLAAR) values ('bouhmadi#131',null,'bouhmadi#131',null,'S ',6);
-Insert into HR.GED_STRUCTURE_ARCH (IDENDOSS,IDEDOSPA,DESIDOSS,ORDRAFFI,TYPEDOSS,IDECLAAR) values ('void#1',null,'void#1',null,'S ',null);
-Insert into HR.GED_STRUCTURE_ARCH (IDENDOSS,IDEDOSPA,DESIDOSS,ORDRAFFI,TYPEDOSS,IDECLAAR) values ('wafa-assurance#',null,'wafa-assurance',null,'S ',7);
-Insert into HR.GED_STRUCTURE_ARCH (IDENDOSS,IDEDOSPA,DESIDOSS,ORDRAFFI,TYPEDOSS,IDECLAAR) values ('orsys#',null,'orsys',null,'S ',7);
 Insert into HR.GED_STRUCTURE_ARCH (IDENDOSS,IDEDOSPA,DESIDOSS,ORDRAFFI,TYPEDOSS,IDECLAAR) values ('zeroual#130',null,'zeroual#130',null,'S ',6);
+Insert into HR.GED_STRUCTURE_ARCH (IDENDOSS,IDEDOSPA,DESIDOSS,ORDRAFFI,TYPEDOSS,IDECLAAR) values ('ramsa##2',null,'ramsa##2',null,'S ',null);
 REM INSERTING into HR.GED_TYPE
 SET DEFINE OFF;
 Insert into HR.GED_TYPE (IDETYPDO,LIBTYPDO,NOTITYPE,TEXTNOTI,NOTI_SMS,NOTI_MAIL,NOTI_MSG,ALERCLAS,DELALECL) values ('PMC','Permis de conduite',null,null,null,null,null,null,null);
@@ -344,12 +352,12 @@ Insert into HR.GED_TYPE (IDETYPDO,LIBTYPDO,NOTITYPE,TEXTNOTI,NOTI_SMS,NOTI_MAIL,
 Insert into HR.GED_TYPE (IDETYPDO,LIBTYPDO,NOTITYPE,TEXTNOTI,NOTI_SMS,NOTI_MAIL,NOTI_MSG,ALERCLAS,DELALECL) values ('CN','Carte Nationale',null,null,null,null,null,null,null);
 REM INSERTING into HR.GED_TYPE_DOC_BIN
 SET DEFINE OFF;
-Insert into HR.GED_TYPE_DOC_BIN (TYPE_DOC,IDEDOCBI) values ('Permis de conduite',493);
-Insert into HR.GED_TYPE_DOC_BIN (TYPE_DOC,IDEDOCBI) values ('Permis de conduite',489);
 Insert into HR.GED_TYPE_DOC_BIN (TYPE_DOC,IDEDOCBI) values ('Permis de conduite',484);
-Insert into HR.GED_TYPE_DOC_BIN (TYPE_DOC,IDEDOCBI) values ('Curicculum Vitae',488);
 Insert into HR.GED_TYPE_DOC_BIN (TYPE_DOC,IDEDOCBI) values ('Carte Nationale',483);
 Insert into HR.GED_TYPE_DOC_BIN (TYPE_DOC,IDEDOCBI) values ('Permis de conduite',486);
+REM INSERTING into HR.WEB_LOGS
+SET DEFINE OFF;
+Insert into HR.WEB_LOGS (MESS_UID,MESS_CLT,MESSERRO,TYPEMESS,OWNER_NAME,CALLER_NAME,LINE_NUMBER,CALLER_TYPE,DATEERRO,CREATEBY) values ('F582EC9927AA4099878645418346D3B3','Erreur à l''execution de la fonction dml_ged_compagnies.ins_ged_compagnies','ORA-01400: cannot insert NULL into ("HR"."GED_COMPAGNIES"."IDCOMPA")','E','HR','WEB_PKG_ROUTER',23,'PACKAGE BODY',to_date('07-JUN-20','DD-MON-RR'),'HR');
 --------------------------------------------------------
 --  DDL for Index PK_GED_ANN_TYPE
 --------------------------------------------------------
@@ -698,3 +706,10 @@ ALTER TRIGGER "HR"."GED_DOC_BIN_BIR" ENABLE;
   ALTER TABLE "HR"."GED_TYPE_DOC_BIN" MODIFY ("TYPE_DOC" NOT NULL ENABLE);
  
   ALTER TABLE "HR"."GED_TYPE_DOC_BIN" MODIFY ("IDEDOCBI" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table WEB_LOGS
+--------------------------------------------------------
+
+  ALTER TABLE "HR"."WEB_LOGS" MODIFY ("DATEERRO" NOT NULL ENABLE);
+ 
+  ALTER TABLE "HR"."WEB_LOGS" MODIFY ("CREATEBY" NOT NULL ENABLE);
